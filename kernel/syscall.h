@@ -21,3 +21,6 @@
 #define SYS_mkdir  20
 #define SYS_close  21
 #define SYS_sync   22
+#define SYS_trace  23
+// [THÊM] SYS_trace dùng số 23 vì trong bản xv6 này 22 đã thuộc SYS_sync
+// (đề gợi ý 22 nhưng phải lấy số kế tiếp hợp lệ để không đè lên syscall cũ).

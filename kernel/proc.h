@@ -101,4 +101,9 @@ struct proc {
   struct file *ofile[NOFILE];  // Open files
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
+
+  // [THÊM] Mask trace của riêng tiến trình này.
+  // Bit thứ n = 1 nghĩa là syscall số n của tiến trình sẽ được in ra.
+  // Đặt ở đây (private to process) nên không cần giữ p->lock khi đọc trong syscall().
+  int trace_mask;
 };

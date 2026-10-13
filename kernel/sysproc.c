@@ -110,3 +110,17 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+// [THÊM] sys_trace(mask): lưu mask vào trace_mask của tiến trình đang gọi.
+// - Tham số thứ 0 nằm trong trapframe->a0; dùng argint() để lấy nó ra.
+// - argint() đọc tham số từ trapframe (a0..a5) nên an toàn hơn đọc trực tiếp.
+// - Trả về 0 báo thành công (theo mẫu "syscall trace -> 0").
+uint64
+sys_trace(void)
+{
+  int mask;
+
+  argint(0, &mask);
+  myproc()->trace_mask = mask;
+  return 0;
+}

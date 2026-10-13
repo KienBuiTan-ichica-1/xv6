@@ -25,6 +25,9 @@ char *sys_sbrk(int, int);
 int pause(int);
 int uptime(void);
 int sync(void);
+// [THÊM] Khai báo syscall trace cho chương trình user.
+// stub hàm này được sinh tự động trong user/usys.S từ user/usys.pl.
+int trace(int);
 
 // ulib.c
 int stat(const char *, struct stat *);

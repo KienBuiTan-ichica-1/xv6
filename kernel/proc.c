@@ -124,6 +124,8 @@ allocproc(void)
 found:
   p->pid = allocpid();
   p->state = USED;
+  // [THÊM] Tiến trình mới mặc định không trace syscall nào (mask = 0).
+  p->trace_mask = 0;
 
   // Allocate a trapframe page.
   if ((p->trapframe = (struct trapframe *)kalloc()) == 0) {
@@ -167,6 +169,8 @@ freeproc(struct proc *p)
   p->chan = 0;
   p->killed = 0;
   p->xstate = 0;
+  // [THÊM] Xoá mask khi tiến trình kết thúc để lần tái sử dụng slot không bị dính mask cũ.
+  p->trace_mask = 0;
   p->state = UNUSED;
 }
 
@@ -288,6 +292,10 @@ kfork(void)
   np->cwd = idup(p->cwd);
 
   safestrcpy(np->name, p->name, sizeof(p->name));
+
+  // [THÊM] Kế thừa mask trace từ tiến trình cha sang tiến trình con.
+  // Nhờ vậy các chương trình dùng fork (như sh chạy lệnh) vẫn được trace.
+  np->trace_mask = p->trace_mask;
 
   pid = np->pid;
 
